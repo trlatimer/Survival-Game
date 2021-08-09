@@ -14,6 +14,7 @@ public class ItemObject : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         // TODO Add to inventory
+        Debug.Log("Interacting with object");
         Destroy(gameObject);
     }
 }
