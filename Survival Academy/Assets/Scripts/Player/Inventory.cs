@@ -141,7 +141,13 @@ public class Inventory : MonoBehaviour
 
     private void UpdateUI()
     {
-
+        for (int x = 0; x < slots.Length; x++)
+        {
+            if (slots[x].item != null)
+                uiSlots[x].Set(slots[x]);
+            else
+                uiSlots[x].Clear();
+        } 
     }
 
     private ItemSlot GetItemStack (ItemData item)
