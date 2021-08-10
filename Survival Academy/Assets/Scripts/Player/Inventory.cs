@@ -43,6 +43,127 @@ public class Inventory : MonoBehaviour
         instance = this;
         controller = GetComponent<PlayerController>();
     }
+
+    private void Start()
+    {
+        inventoryWindow.SetActive(false);
+        slots = new ItemSlot[uiSlots.Length];
+
+        // Initialize slots
+        for (int x = 0; x < slots.Length; x++)
+        {
+            slots[x] = new ItemSlot();
+            uiSlots[x].index = x;
+            uiSlots[x].Clear();
+        }
+    }
+
+    public void Toggle()
+    {
+
+    }
+
+    public bool IsOpen()
+    {
+        return inventoryWindow.activeInHierarchy;
+    }
+
+    public void AddItem (ItemData item)
+    {
+        if (item.canStack)
+        {
+            ItemSlot slotToStackTo = GetItemStack(item);
+
+            if (slotToStackTo != null)
+            {
+                slotToStackTo.quantity++;
+                UpdateUI();
+                return;
+            }
+        }
+
+        ItemSlot emptySlot = GetEmptySlot();
+        if (emptySlot != null)
+        {
+            emptySlot.item = item;
+            emptySlot.quantity = 1;
+            UpdateUI();
+            return;
+        }
+
+        ThrowItem(item);
+    }
+
+    public void SelectItem(int index)
+    {
+
+    }
+
+    public void OnUseButton()
+    {
+
+    }
+
+    public void OnEquipButton()
+    {
+
+    }
+
+    public void OnUnEquipButton()
+    {
+
+    }
+
+    public void OnDropButton()
+    {
+
+    }
+
+    public void RemoveItem (ItemData item)
+    {
+
+    }
+
+    public bool HasItems(ItemData item, int quantity)
+    {
+        return false;
+    }
+
+    private void UnEquip(int index)
+    {
+
+    }
+
+    private void ThrowItem (ItemData item)
+    {
+
+    }
+
+    private void UpdateUI()
+    {
+
+    }
+
+    private ItemSlot GetItemStack (ItemData item)
+    {
+        return null;
+    }
+
+    ItemSlot GetEmptySlot()
+    {
+        return null;
+    }
+
+    private void ClearSelectedItemWindow()
+    {
+
+    }
+
+    private void RemoveSelectedItem()
+    {
+
+    }
+
 }
 
 public class ItemSlot

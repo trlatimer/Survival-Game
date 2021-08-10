@@ -3685,7 +3685,19 @@ MonoBehaviour:
     m_ActionId: 2d32b42d-332a-4b1c-9303-8b7e3398391d
     m_ActionName: Main/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 963728513}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: aa95ae96-db5e-4596-81e1-f2bdc5f1c8df
     m_ActionName: Main/Inventory[/Keyboard/tab]
   - m_PersistentCalls:
