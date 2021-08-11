@@ -56,11 +56,31 @@ public class Inventory : MonoBehaviour
             uiSlots[x].index = x;
             uiSlots[x].Clear();
         }
+
+        ClearSelectedItemWindow();
+    }
+
+    public void OnInventoryButton(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            Toggle();
+        }
     }
 
     public void Toggle()
     {
-
+        if (inventoryWindow.activeInHierarchy)
+        {
+            inventoryWindow.SetActive(false);
+            onCloseInventory.Invoke();
+        }
+        else
+        {
+            inventoryWindow.SetActive(true);
+            onOpenInventory.Invoke();
+            ClearSelectedItemWindow();
+        }
     }
 
     public bool IsOpen()
@@ -96,7 +116,20 @@ public class Inventory : MonoBehaviour
 
     public void SelectItem(int index)
     {
+        if (slots[index] == null) return;
 
+        selectedItem = slots[index];
+        selectedItemIndex = index;
+
+        selectedItemName.text = selectedItem.item.displayName;
+        selectedItemDescription.text = selectedItem.item.description;
+
+        // set stat values and names
+
+        useButton.SetActive(selectedItem.item.type == ItemType.Consumable);
+        equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !uiSlots[index].equipped);
+        unEquipButton.SetActive(selectedItem.item.type == ItemType.Equipable && uiSlots[index].equipped);
+        dropButton.SetActive(true);
     }
 
     public void OnUseButton()
@@ -152,17 +185,40 @@ public class Inventory : MonoBehaviour
 
     private ItemSlot GetItemStack (ItemData item)
     {
+        for (int x = 0; x < slots.Length; x++)
+        {
+            if (slots[x].item == item && slots[x].quantity < item.maxStackAmount)
+                return slots[x];
+        }
+
         return null;
     }
 
     ItemSlot GetEmptySlot()
     {
+        for (int x = 0; x < slots.Length; x++)
+        {
+            if (slots[x].item == null)
+                return slots[x];
+        }
+
         return null;
     }
 
     private void ClearSelectedItemWindow()
     {
+        // clear the text elements
+        selectedItem = null;
+        selectedItemName.text = string.Empty;
+        selectedItemDescription.text = string.Empty;
+        selectedItemStatNames.text = string.Empty;
+        selectedItemStatValues.text = string.Empty;
 
+        // disable buttons
+        useButton.SetActive(false);
+        equipButton.SetActive(false);
+        unEquipButton.SetActive(false);
+        dropButton.SetActive(false);
     }
 
     private void RemoveSelectedItem()
