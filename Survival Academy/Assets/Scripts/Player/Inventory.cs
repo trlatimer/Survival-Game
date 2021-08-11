@@ -30,6 +30,7 @@ public class Inventory : MonoBehaviour
 
     // Components
     private PlayerController controller;
+    private PlayerNeeds needs;
 
     [Header("Events")]
     public UnityEvent onOpenInventory;
@@ -42,6 +43,7 @@ public class Inventory : MonoBehaviour
     {
         instance = this;
         controller = GetComponent<PlayerController>();
+        needs = GetComponent<PlayerNeeds>();
     }
 
     private void Start()
@@ -74,12 +76,14 @@ public class Inventory : MonoBehaviour
         {
             inventoryWindow.SetActive(false);
             onCloseInventory.Invoke();
+            controller.ToggleCursor(false);
         }
         else
         {
             inventoryWindow.SetActive(true);
             onOpenInventory.Invoke();
             ClearSelectedItemWindow();
+            controller.ToggleCursor(true);
         }
     }
 
@@ -121,11 +125,20 @@ public class Inventory : MonoBehaviour
         selectedItem = slots[index];
         selectedItemIndex = index;
 
+        // Set Name and Description
         selectedItemName.text = selectedItem.item.displayName;
         selectedItemDescription.text = selectedItem.item.description;
 
         // set stat values and names
+        selectedItemStatNames.text = string.Empty;
+        selectedItemStatValues.text = string.Empty;
+        for (int x = 0; x < selectedItem.item.consumables.Length; x++)
+        {
+            selectedItemStatNames.text += selectedItem.item.consumables[x].type.ToString() + "\n";
+            selectedItemStatValues.text += selectedItem.item.consumables[x].value.ToString() + "\n";
+        }
 
+        // Activate appropriate buttons
         useButton.SetActive(selectedItem.item.type == ItemType.Consumable);
         equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !uiSlots[index].equipped);
         unEquipButton.SetActive(selectedItem.item.type == ItemType.Equipable && uiSlots[index].equipped);
@@ -134,7 +147,29 @@ public class Inventory : MonoBehaviour
 
     public void OnUseButton()
     {
+        if (selectedItem.item.type == ItemType.Consumable)
+        {
+            for (int x = 0; x < selectedItem.item.consumables.Length; x++)
+            {
+                switch (selectedItem.item.consumables[x].type)
+                {
+                    case ConsumableType.Health: 
+                        needs.Heal(selectedItem.item.consumables[x].value);
+                        break;
+                    case ConsumableType.Hunger:
+                        needs.Eat(selectedItem.item.consumables[x].value);
+                        break;
+                    case ConsumableType.Thirst:
+                        needs.Drink(selectedItem.item.consumables[x].value);
+                        break;
+                    case ConsumableType.Sleep:
+                        needs.Sleep(selectedItem.item.consumables[x].value);
+                        break;
+                }
+            }
+        }
 
+        RemoveSelectedItem();
     }
 
     public void OnEquipButton()
@@ -149,7 +184,8 @@ public class Inventory : MonoBehaviour
 
     public void OnDropButton()
     {
-
+        ThrowItem(selectedItem.item);
+        RemoveSelectedItem();
     }
 
     public void RemoveItem (ItemData item)
@@ -169,7 +205,7 @@ public class Inventory : MonoBehaviour
 
     private void ThrowItem (ItemData item)
     {
-
+        Instantiate(item.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360.0f));
     }
 
     private void UpdateUI()
@@ -223,7 +259,18 @@ public class Inventory : MonoBehaviour
 
     private void RemoveSelectedItem()
     {
+        selectedItem.quantity--;
 
+        if (selectedItem.quantity == 0)
+        {
+            if (uiSlots[selectedItemIndex].equipped)
+                UnEquip(selectedItemIndex);
+
+            selectedItem.item = null;
+            ClearSelectedItemWindow();
+        }
+
+        UpdateUI();
     }
 
 }

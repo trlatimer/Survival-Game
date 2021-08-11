@@ -62,6 +62,11 @@ public class PlayerNeeds : MonoBehaviour, IDamagable
         hunger.Add(amount);
     }
 
+    public void Drink(float amount)
+    {
+        thirst.Add(amount);
+    }
+
     public void Sleep(float amount)
     {
         sleep.Subtract(amount);
