@@ -13,15 +13,13 @@ public class Resource : MonoBehaviour
     {
         for (int i = 0; i < quantityPerHit; i++)
         {
-            capacity -= 1;
             if (capacity <= 0)
-            {
                 break;
-            }
+            capacity -= 1;
             Inventory.instance.AddItem(itemToGive);
         }
 
-        Instantiate(hitParticle, hitpoint, Quaternion.LookRotation(hitNormal, Vector3.up));
+        Destroy(Instantiate(hitParticle, hitpoint, Quaternion.LookRotation(hitNormal, Vector3.up)), 1.0f);
 
         if (capacity <= 0)
             Destroy(gameObject);
