@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Bed
   icon: {fileID: 21300000, guid: 7f53e9b787381554580dda71b70e7247, type: 3}
   spawnPrefab: {fileID: 2960247652732257625, guid: 6ed5c22950a030e43a9e46a0313b92e7, type: 3}
-  previewPrefab: {fileID: 0}
+  previewPrefab: {fileID: 6300784403253213584, guid: d4c718ae0a07dce4b867765739e46200, type: 3}
   cost:
   - item: {fileID: 11400000, guid: 05f6f7f76c03347498ef89c93946ece8, type: 2}
     quantity: 4

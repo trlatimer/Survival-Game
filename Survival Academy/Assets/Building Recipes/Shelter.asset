@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Shelter
   icon: {fileID: 21300000, guid: f25da43f4daaead41a2d61ee1ae5e7e0, type: 3}
   spawnPrefab: {fileID: 635941120377575866, guid: a34bbcc128ae4ce4e8231a2b45a030bc, type: 3}
-  previewPrefab: {fileID: 0}
+  previewPrefab: {fileID: 9017213282106061361, guid: 59d9638401140bb41a10de9914774eb7, type: 3}
   cost:
   - item: {fileID: 11400000, guid: 05f6f7f76c03347498ef89c93946ece8, type: 2}
     quantity: 4

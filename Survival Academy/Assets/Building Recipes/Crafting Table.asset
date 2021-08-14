@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Crafting Table
   icon: {fileID: 21300000, guid: e62193afb6845bf4396b273151fba50b, type: 3}
   spawnPrefab: {fileID: 2700392090911393647, guid: cb3aef7620d72e74baf57dcbc7e46eac, type: 3}
-  previewPrefab: {fileID: 0}
+  previewPrefab: {fileID: 5012072804681195657, guid: dd65f50a0fc577b41b7150e9a6d2c6b1, type: 3}
   cost:
   - item: {fileID: 11400000, guid: 05f6f7f76c03347498ef89c93946ece8, type: 2}
     quantity: 2

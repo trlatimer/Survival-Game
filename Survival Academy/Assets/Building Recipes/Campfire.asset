@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Campfire
   icon: {fileID: 21300000, guid: 88e9bef836a818746adda25a27d1d919, type: 3}
   spawnPrefab: {fileID: 973238219954726283, guid: fbd18f449d9a618419fffac5ba9f6ab2, type: 3}
-  previewPrefab: {fileID: 0}
+  previewPrefab: {fileID: 1176962139352571302, guid: a7dbdc734eebc314eb33daf331965eda, type: 3}
   cost:
   - item: {fileID: 11400000, guid: 05f6f7f76c03347498ef89c93946ece8, type: 2}
     quantity: 1
