@@ -31,7 +31,9 @@ public class CraftingRecipeUI : MonoBehaviour
         {
             if (i < recipe.costs.Length)
             {
-
+                resourceCosts[i].gameObject.SetActive(true);
+                resourceCosts[i].sprite = recipe.costs[i].item.icon;
+                resourceCosts[i].transform.GetComponentInChildren<TextMeshProUGUI>().text = recipe.costs[i].quantity.ToString();
             }
             else
             {
@@ -54,5 +56,13 @@ public class CraftingRecipeUI : MonoBehaviour
         }
 
         backgroundImage.color = canCraft ? canCraftColor : cannotCraftColor;
+    }
+
+    public void OnClickButton()
+    {
+        if (canCraft)
+        {
+            CraftingWindow.instance.Craft(recipe);
+        }
     }
 }
