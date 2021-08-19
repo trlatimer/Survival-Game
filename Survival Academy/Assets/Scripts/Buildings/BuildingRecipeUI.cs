@@ -58,6 +58,14 @@ public class BuildingRecipeUI : MonoBehaviour
 
     public void OnClickButton()
     {
-
+        if (canBuild)
+        {
+            EquipBuildingKit.instance.SetNewBuildingRecipe(recipe);
+        }
+        else
+        {
+            PlayerController.instance.ToggleCursor(true);
+            gameObject.SetActive(false);
+        }
     }
 }
