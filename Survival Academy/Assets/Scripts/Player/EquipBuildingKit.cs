@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EquipBuildingKit : Equip
 {
@@ -46,7 +47,31 @@ public class EquipBuildingKit : Equip
             {
                 curBuildingPreview.transform.position = hit.point;
                 curBuildingPreview.transform.up = hit.normal;
+                curBuildingPreview.transform.Rotate(new Vector3(0, curYRot, 0), Space.Self);
+
+                if (!curBuildingPreview.CollidingWithObjects())
+                {
+                    if (!canPlace)
+                        curBuildingPreview.CanPlace();
+
+                    canPlace = true;
+                }
+                else
+                {
+                    if (canPlace)
+                        curBuildingPreview.CannotPlace();
+
+                    canPlace = false;
+                }
             }
+        }
+
+        if (Keyboard.current.rKey.isPressed)
+        {
+            curYRot += rotateSpeed * Time.deltaTime;
+
+            if (curYRot > 360)
+                curYRot = 0.0f;
         }
     }
 
@@ -57,7 +82,23 @@ public class EquipBuildingKit : Equip
 
     public override void OnAttackInput()
     {
-        
+        if (curRecipe == null || curBuildingPreview == null || !canPlace) return;
+
+        Instantiate(curRecipe.spawnPrefab, curBuildingPreview.transform.position, curBuildingPreview.transform.rotation);
+
+        for(int x = 0; x < curRecipe.cost.Length; x++)
+        {
+            for (int y = 0; y < curRecipe.cost[x].quantity; y++)
+            {
+                Inventory.instance.RemoveItem(curRecipe.cost[x].item);
+            }
+        }
+
+        curRecipe = null;
+        Destroy(curBuildingPreview.gameObject);
+        curBuildingPreview = null;
+        canPlace = false;
+        curYRot = 0;
     }
 
     public override void OnAltAttackInput()

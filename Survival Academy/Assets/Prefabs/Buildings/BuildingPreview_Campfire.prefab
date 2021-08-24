@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2149567039250055122}
   - component: {fileID: 1176962139352571301}
   - component: {fileID: 8501587670898947367}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: BuildingPreview_Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 25e30ea288b3ce34bbc91f85fb8c8874, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25e30ea288b3ce34bbc91f85fb8c8874, type: 3}
