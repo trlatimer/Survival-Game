@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6532220299509179509}
   - component: {fileID: 6532220299509179506}
   - component: {fileID: 6532220299509179507}
+  - component: {fileID: 8280889557512727192}
   m_Layer: 11
   m_Name: Resource_Stone
   m_TagString: Untagged
@@ -63,6 +64,22 @@ CapsuleCollider:
   m_Height: 1.98
   m_Direction: 1
   m_Center: {x: 0, y: 0.81, z: 0}
+--- !u!208 &8280889557512727192
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532220299509179508}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.94, y: 1.205, z: 0.94}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.58, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &6532220299659271499
 PrefabInstance:
   m_ObjectHideFlags: 0
