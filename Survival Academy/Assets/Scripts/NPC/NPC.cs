@@ -18,7 +18,7 @@ public enum AIState
     Fleeing
 }
 
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviour, IDamagable
 {
     [Header("Stats")]
     public int health;
@@ -55,6 +55,8 @@ public class NPC : MonoBehaviour
     {
         // Get Components
         agent = GetComponent<NavMeshAgent>();
+
+        meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
@@ -100,17 +102,39 @@ public class NPC : MonoBehaviour
         else if (aiType == AIType.Scared && playerDistance < detectDistance)
         {
             SetState(AIState.Fleeing);
+            agent.SetDestination(GetFleeLocation());
         }
     }
 
     private void AttackingUpdate()
     {
+        if (playerDistance > attackDistance)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(PlayerController.instance.transform.position);
+        }
+        else
+        {
+            agent.isStopped = true;
 
+            if (Time.time - lastAttackTime > attackRate)
+            {
+                lastAttackTime = Time.time;
+                PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+            }
+        }
     }
 
     private void FleeingUpdate()
     {
-
+        if (playerDistance < safeDistance && agent.remainingDistance < 0.1f)
+        {
+            agent.SetDestination(GetFleeLocation());
+        }
+        else if (playerDistance > safeDistance)
+        {
+            SetState(AIState.Wandering);
+        }
     }
 
     private void WanderToNewLocation()
@@ -140,11 +164,19 @@ public class NPC : MonoBehaviour
                     break;
                 }
             case AIState.Attacking:
-                agent.speed = runSpeed;
-                break;
+                {
+                    agent.speed = runSpeed;
+                    agent.isStopped = false;
+                    break;
+                }
+                
             case AIState.Fleeing:
-                agent.speed = runSpeed;
-                break;
+                {
+                    agent.speed = runSpeed;
+                    agent.isStopped = false;
+                    break;
+                }
+                
         }
     }
 
@@ -162,5 +194,62 @@ public class NPC : MonoBehaviour
         }
 
         return hit.position;
+    }
+
+    private Vector3 GetFleeLocation()
+    {
+        NavMeshHit hit;
+        NavMesh.SamplePosition(transform.position + (Random.onUnitSphere * safeDistance), out hit, safeDistance, NavMesh.AllAreas);
+
+        int i = 0;
+        while (GetDestinationAngle(hit.position) > 90 || playerDistance < safeDistance)
+        {
+            NavMesh.SamplePosition(transform.position + (Random.onUnitSphere * safeDistance), out hit, safeDistance, NavMesh.AllAreas);
+            i++;
+            if (i == 30) break;
+        }
+
+        return hit.position;
+    }
+
+    private float GetDestinationAngle(Vector3 targetPos)
+    {
+        return Vector3.Angle(transform.position - PlayerController.instance.transform.position, transform.position + targetPos);
+    }
+
+    public void TakePhysicalDamage(int damageAmount)
+    {
+        health -= damageAmount;
+
+        if (health <= 0)
+            Die();
+
+        StartCoroutine(DamageFlash());
+
+        if (aiType == AIType.Passive)
+            SetState(AIState.Fleeing);
+    }
+
+    private void Die()
+    {
+        for(int x = 0; x < dropOnDeath.Length; x++)
+        {
+            Instantiate(dropOnDeath[x].dropPrefab, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
+    }
+
+    IEnumerator DamageFlash()
+    {
+        // flash a reddish color
+        for (int x = 0; x < meshRenderers.Length; x++)
+            meshRenderers[x].material.color = new Color(1.0f, 0.6f, 0.6f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        // return to normal color
+        for (int x = 0; x < meshRenderers.Length; x++)
+            meshRenderers[x].material.color = Color.white;
     }
 }
