@@ -55,6 +55,7 @@ public class NPC : MonoBehaviour, IDamagable
     {
         // Get Components
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponentInChildren<Animator>();
 
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
@@ -68,6 +69,8 @@ public class NPC : MonoBehaviour, IDamagable
     {
         // Get player distance
         playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
+
+        anim.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
         {
@@ -121,6 +124,7 @@ public class NPC : MonoBehaviour, IDamagable
             {
                 lastAttackTime = Time.time;
                 PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+                anim.SetTrigger("Attack");
             }
         }
     }
