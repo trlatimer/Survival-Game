@@ -10,12 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39fdfda085d9392418692d481d8416a3, type: 3}
-  m_Name: Wood
+  m_Name: Banana
   m_EditorClassIdentifier: 
-  displayName: Wood
-  description: A common resource, gather from trees
-  type: 0
-  icon: {fileID: 21300000, guid: def12059be57b234b94bb4f915529910, type: 3}
-  dropPrefab: {fileID: 5530110500835876278, guid: bfad19e05e5087f44a724cc29afdf607, type: 3}
+  id: banana
+  displayName: Banana
+  description: This is a food you can eat
+  type: 2
+  icon: {fileID: 21300000, guid: fa9e8ae838aac094685e01e99bed5717, type: 3}
+  dropPrefab: {fileID: 3779070994181751822, guid: d07914672aa8aab4e80090a9d17e0974, type: 3}
   canStack: 1
   maxStackAmount: 12
+  consumables:
+  - type: 0
+    value: 50
+  - type: 1
+    value: 30
+  equipPrefab: {fileID: 0}

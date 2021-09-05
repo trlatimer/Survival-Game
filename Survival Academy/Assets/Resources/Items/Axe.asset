@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39fdfda085d9392418692d481d8416a3, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
+  id: axe
   displayName: Axe
   description: Can be used to gather resources
   type: 1
