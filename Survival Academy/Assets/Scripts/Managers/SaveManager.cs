@@ -101,7 +101,7 @@ public class SaveManager : MonoBehaviour
             data.npcs[x].prefabId = npcs[x].data.id;
             data.npcs[x].position = new SVec3(npcs[x].transform.position);
             data.npcs[x].rotation = new SVec3(npcs[x].transform.eulerAngles);
-            data.npcs[x].aiState = (int)npcs[x].aiType;
+            data.npcs[x].aiState = (int)npcs[x].aiState;
             data.npcs[x].hasAgentDestination = !npcs[x].agent.isStopped;
             data.npcs[x].agentDestination = new SVec3(npcs[x].agent.destination);
         }
@@ -116,6 +116,92 @@ public class SaveManager : MonoBehaviour
 
     private void Load()
     {
-      
+        SaveData data = JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString("Save"));
+
+        // Player location
+        PlayerController.instance.transform.position = data.playerPos.GetVector3();
+        PlayerController.instance.transform.eulerAngles = data.playerRot.GetVector3();
+        PlayerController.instance.cameraContainer.localEulerAngles = data.playerLook.GetVector3();
+
+        // Player needs
+        PlayerNeeds.instance.health.curValue = data.health;
+        PlayerNeeds.instance.hunger.curValue = data.hunger;
+        PlayerNeeds.instance.thirst.curValue = data.thirst;
+        PlayerNeeds.instance.sleep.curValue = data.sleep;
+
+        // Inventory
+        int equippedItem = 999;
+
+        for (int x = 0; x < data.inventory.Length; x++)
+        {
+            if (!data.inventory[x].occupied) continue;
+
+            Inventory.instance.slots[x].item = ObjectManager.instance.GetItemByID(data.inventory[x].itemId);
+            Inventory.instance.slots[x].quantity = data.inventory[x].quantity;
+
+            if (data.inventory[x].equipped)
+            {
+                equippedItem = x;
+            }
+        }
+
+        if (equippedItem != 999)
+        {
+            Inventory.instance.SelectItem(equippedItem);
+            Inventory.instance.OnEquipButton();
+        }
+
+        // Destroy pre-existing
+        ItemObject[] droppedItems = FindObjectsOfType<ItemObject>();
+        for (int x = 0; x < droppedItems.Length; x++)
+            Destroy(droppedItems[x].gameObject);
+
+        // Dropped items
+        for(int x = 0; x < data.droppedItems.Length; x++)
+        {
+            GameObject prefab = ObjectManager.instance.GetItemByID(data.droppedItems[x].itemId).dropPrefab;
+            Instantiate(prefab, data.droppedItems[x].position.GetVector3(), Quaternion.Euler(data.droppedItems[x].rotation.GetVector3()));
+        }
+
+        // Buildings
+        for (int x = 0; x < data.buildings.Length; x++)
+        {
+            GameObject prefab = ObjectManager.instance.GetBuildingByID(data.buildings[x].buildingId).spawnPrefab;
+            GameObject building = Instantiate(prefab, data.buildings[x].position.GetVector3(), Quaternion.Euler(data.buildings[x].rotation.GetVector3()));
+            building.GetComponent<Building>().ReceiveCustomProperties(data.buildings[x].customProperties);
+        }
+
+        // Resources
+        for(int x = 0; x < ObjectManager.instance.resources.Length; x++)
+        {
+            if (data.resources[x].destroyed)
+            {
+                Destroy(ObjectManager.instance.resources[x].gameObject);
+                continue;
+            }
+
+            ObjectManager.instance.resources[x].capacity = data.resources[x].capacity;
+        }
+
+        // Destroy all pre-existing NPCs
+        NPC[] npcs = FindObjectsOfType<NPC>();
+        for (int x = 0; x < npcs.Length; x++)
+            Destroy(npcs[x].gameObject);
+
+        // Spawn in NPCs
+        for (int x = 0; x < data.npcs.Length; x++)
+        {
+            GameObject prefab = ObjectManager.instance.GetNPCByID(data.npcs[x].prefabId).spawnPrefab;
+            GameObject npcObj = Instantiate(prefab, data.npcs[x].position.GetVector3(), Quaternion.Euler(data.npcs[x].rotation.GetVector3()));
+            NPC npc = npcObj.GetComponent<NPC>();
+
+            npc.aiState = (AIState) data.npcs[x].aiState;
+            npc.agent.isStopped = !data.npcs[x].hasAgentDestination;
+            if (!npc.agent.isStopped)
+                npc.agent.SetDestination(data.npcs[x].agentDestination.GetVector3());
+        }
+
+        // Time of day
+        DayNightCycle.instance.time = data.timeOfDay;
     }
 }

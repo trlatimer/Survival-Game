@@ -30,7 +30,7 @@ public class NPC : MonoBehaviour, IDamagable
 
     [Header("AI")]
     public AIType aiType;
-    private AIState aiState;
+    public AIState aiState;
     public float detectDistance;
     public float safeDistance;
 

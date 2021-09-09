@@ -78,7 +78,7 @@ public class Campfire : Building, IInteractable
 
     public override void ReceiveCustomProperties(string props)
     {
-        isOn = props == "true" ? true : false;
+        isOn = props == "True" ? true : false;
 
         particle.SetActive(isOn);
         light.SetActive(isOn);

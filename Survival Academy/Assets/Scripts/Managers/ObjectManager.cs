@@ -54,4 +54,16 @@ public class ObjectManager : MonoBehaviour
         Debug.LogError("No item has been found");
         return null;
     }
+
+    public NPCData GetNPCByID(string id)
+    {
+        for (int x = 0; x < npcs.Length; x++)
+        {
+            if (npcs[x].id == id)
+                return npcs[x];
+        }
+
+        Debug.LogError("No NPC has been found");
+        return null;
+    }
 }
