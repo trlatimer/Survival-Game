@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ed1d533384abd4d8f50f8b7f49d906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 0797ec020ebb1b2469bb8951eeb4d122, type: 2}
   particle: {fileID: 4656120084468699397}
   light: {fileID: 3592860956138464793}
   damage: 5

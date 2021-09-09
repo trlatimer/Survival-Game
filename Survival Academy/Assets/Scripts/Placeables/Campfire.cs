@@ -70,4 +70,17 @@ public class Campfire : Building, IInteractable
         if (other.gameObject.GetComponent<IDamagable>() != null)
             thingsToDamage.Remove(other.gameObject.GetComponent<IDamagable>());
     }
+
+    public override string GetCustomProperties()
+    {
+        return isOn.ToString();
+    }
+
+    public override void ReceiveCustomProperties(string props)
+    {
+        isOn = props == "true" ? true : false;
+
+        particle.SetActive(isOn);
+        light.SetActive(isOn);
+    }
 }

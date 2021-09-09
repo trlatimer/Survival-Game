@@ -20,6 +20,8 @@ public enum AIState
 
 public class NPC : MonoBehaviour, IDamagable
 {
+    public NPCData data;
+
     [Header("Stats")]
     public int health;
     public float walkSpeed;
@@ -47,7 +49,7 @@ public class NPC : MonoBehaviour, IDamagable
     private float playerDistance;
 
     // Components
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     private Animator anim;
     private SkinnedMeshRenderer[] meshRenderers;
 

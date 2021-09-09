@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 28a64b17478de184c85b57178e64f232, type: 3}
   m_Name: Crafting Table
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   id: crafting table
-  spawnPrefab: {fileID: 2700392090911393647, guid: cb3aef7620d72e74baf57dcbc7e46eac, type: 3}
+  spawnPrefab: {fileID: 919132149155446097, guid: f623e0a98802cda4d8f27aa2c616004b, type: 3}
