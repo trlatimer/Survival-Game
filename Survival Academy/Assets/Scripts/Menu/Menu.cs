@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
     }
 
     public void OnNewGameButton()
-    {0
+    {
         PlayerPrefs.DeleteKey("Save");
         SceneManager.LoadScene("Game");
     }
